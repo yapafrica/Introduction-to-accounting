@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Your Knowledge - Introduction to Accounting</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            background-color: #f4f4f4;
+            text-align: center;
+        }
+
+        h2 {
+            color: #2c3e50;
+        }
+
+        #quiz-container {
+            display: none;
+            text-align: left;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .question {
+            margin-bottom: 15px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            font-size: 16px;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            margin: 5px;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        #result {
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 15px;
+            color: #27ae60;
+        }
+
+        @media (max-width: 480px) {
+            body {
+                font-size: 14px;
+            }
+
+            button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Test Your Knowledge - You have 10 questions!</h2>
+    <button id="start-quiz">Start Quiz</button>
+
+    <div id="quiz-container">
+        <div id="quiz"></div>
+        <button id="submit">Submit</button>
+        <p id="result"></p>
+        <button id="retake">Retake Quiz</button>
+    </div>
+
+    <script>
+        const quizData = [
+            { 
+                question: "What is accounting?", 
+                options: ["The study of money", "Keeping financial records", "Selling products", "A type of business"],
+                answer: "Keeping financial records"
+            },
+            { 
+                question: "Which of these is a financial record?", 
+                options: ["A novel", "A receipt", "A textbook", "A magazine"],
+                answer: "A receipt"
+            },
+            { 
+                question: "Why do businesses need accounting?", 
+                options: ["To track their money", "To increase their expenses", "To avoid paying salaries", "To write stories"],
+                answer: "To track their money"
+            },
+            { 
+                question: "Which is NOT part of accounting?", 
+                options: ["Recording transactions", "Guessing expenses", "Tracking income", "Balancing financial records"],
+                answer: "Guessing expenses"
+            },
+            { 
+                question: "What is profit?", 
+                options: ["Total money earned", "Money left after expenses", "Money borrowed", "Total expenses"],
+                answer: "Money left after expenses"
+            },
+            { 
+                question: "Which of these is an example of income?", 
+                options: ["Buying a laptop", "Selling a product", "Paying rent", "Buying groceries"],
+                answer: "Selling a product"
+            },
+            { 
+                question: "What happens if a business doesn’t track expenses?", 
+                options: ["They might overspend", "They will become rich", "They will not make sales", "They will always have money"],
+                answer: "They might overspend"
+            },
+            { 
+                question: "What should a person do before spending money?", 
+                options: ["Check their balance", "Spend first, check later", "Ignore accounting", "Guess how much they have"],
+                answer: "Check their balance"
+            },
+            { 
+                question: "Which document shows how much a business made?", 
+                options: ["A financial statement", "A novel", "A textbook", "A shopping list"],
+                answer: "A financial statement"
+            },
+            { 
+                question: "Which of these is NOT income?", 
+                options: ["Salary", "Selling products", "Borrowing money", "Profit"],
+                answer: "Borrowing money"
+            }
+        ];
+
+        let shuffledQuiz = [];
+
+        function shuffleQuiz() {
+            shuffledQuiz = [...quizData].sort(() => Math.random() - 0.5);
+        }
+
+        function displayQuiz() {
+            const quizDiv = document.getElementById("quiz");
+            quizDiv.innerHTML = "";
+            shuffledQuiz.forEach((q, index) => {
+                const questionDiv = document.createElement("div");
+                questionDiv.classList.add("question");
+                questionDiv.innerHTML = `<p>${q.question}</p>`;
+                
+                q.options.forEach(option => {
+                    questionDiv.innerHTML += `
+                        <label>
+                            <input type="radio" name="q${index}" value="${option}">
+                            ${option}
+                        </label><br>
+                    `;
+                });
+                
+                quizDiv.appendChild(questionDiv);
+            });
+        }
+
+        function calculateScore() {
+            let score = 0;
+            shuffledQuiz.forEach((q, index) => {
+                const selectedOption = document.querySelector(`input[name="q${index}"]:checked`);
+                if (selectedOption && selectedOption.value === q.answer) {
+                    score++;
+                }
+            });
+
+            document.getElementById("result").textContent = `You got ${score} out of ${shuffledQuiz.length}`;
+        }
+
+        document.getElementById("start-quiz").addEventListener("click", () => {
+            shuffleQuiz();
+            displayQuiz();
+            document.getElementById("quiz-container").style.display = "block";
+            document.getElementById("start-quiz").style.display = "none";
+        });
+
+        document.getElementById("submit").addEventListener("click", calculateScore);
+
+        document.getElementById("retake").addEventListener("click", () => {
+            shuffleQuiz();
+            displayQuiz();
+            document.getElementById("result").textContent = "";
+        });
+
+    </script>
+
+</body>
+</html>
